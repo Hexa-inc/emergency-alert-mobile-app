@@ -60,7 +60,7 @@ export default function CreateAccount() {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Text style={styles.topText}>Create Account----</Text>
+        <Text style={styles.topText}>Create Account--</Text>
 
         <View style={{width: "100%", bottom: "3.6%", left: "3%"}}>
            <Input value={firstname} setValue={setfirstname} placeholder='First Name' error={error.firstname} />
