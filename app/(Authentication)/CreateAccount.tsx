@@ -77,7 +77,6 @@ export default function CreateAccount() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -87,13 +86,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   subcontainer: {
+    flex: 1,
     backgroundColor: "white",
     width: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: isTablet ? 30 : 20,
-   // Increased padding for tablets
-     // Center content horizontally
+    paddingBottom: 20, // Optional padding for the bottom
+    position: 'absolute',
+    bottom: 0,
   },
   topText: {
     fontSize: isTablet ? 50 : 40, // Adjusted font size for tablets
@@ -102,4 +103,3 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
 });
-
