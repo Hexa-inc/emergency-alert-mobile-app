@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius: 40,
     alignSelf: "center", // Centers button in its container
-    minWidth: 200, // Set minimum width as needed
+    minWidth: 200, // Set minimum width as needed,
+    width: "70%",
   },
   
   SigninButtonText: {
