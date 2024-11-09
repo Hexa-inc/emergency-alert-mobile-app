@@ -32,13 +32,13 @@ const SicknessPage = () => {
       <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black",  marginVertical:15}}>
         <Text style={{fontSize:20,padding:15}}>Heat Stroke</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", marginBottom:15}}>
+      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black",}}>
         <Text style={{fontSize:20,padding:15}}>Menstrual Cramps</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", marginBottom:15}}>
+      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", marginVertical:15}}>
         <Text style={{fontSize:20,padding:15}}>Seizures</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", marginBottom:15}}>
+      <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", }}>
         <Text style={{fontSize:20,padding:15}}>Ulcer</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{borderRadius:20, borderWidth:1, borderColor:"black", marginBottom:15}}>
