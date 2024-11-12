@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import Link, { useRouter } from 'expo-router';
+import  { useRouter, Link } from 'expo-router';
 
 const HostelPage = () => {
   const router = useRouter();
@@ -15,7 +15,7 @@ const HostelPage = () => {
       console.log(`Selected hostel: ${hostelName}`); // Logs the selected hostel
 
       // Navigate to the next page
-      router.push('/EmergencyPage'); // Replace '/nextPage' with your actual route
+      router.push('/(EmergencyAction)/EmergencyPage'); // Replace '/nextPage' with your actual route
     } catch (error) {
       console.error('Error:', error);
     }
@@ -23,20 +23,24 @@ const HostelPage = () => {
 
   return (
     <View style={styles.container}>    
+      <Link asChild href={'/'}>
+
+      <AntDesign name="arrowleft" size={30} color="white" style={{ marginTop: 29, marginLeft: 10 }} />
       
-      <AntDesign name="arrowleft" size={30} color="black" style={{ marginTop: 29, marginLeft: 10 }} />
-      
+      </Link>
       <View style={styles.hostelContainer}>
         <Text style={styles.header}>Select Hostel</Text>
 
-        {['New Elizabeth Hall', 'Elizabeth 1', 'Elizabeth 2', 'Elizabeth 3', 'Guest House', 'Daniel 1', 'House of Daniel', 'Regional House', 'Chapel'].map((hostel, index) => (
-          <TouchableOpacity 
-            key={index} 
-            style={styles.hostelButton} 
-            onPress={() => handleSelectHostel(hostel)}>
-            <Text style={styles.hostelText}>{hostel}</Text>
-          </TouchableOpacity>
-        ))}
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {['New Elizabeth Hall', 'Elizabeth 1', 'Elizabeth 2', 'Elizabeth 3', 'Guest House', 'Daniel 1', 'House of Daniel', 'Regional House', 'Chapel'].map((hostel, index) => (
+            <TouchableOpacity 
+              key={index} 
+              style={styles.hostelButton} 
+              onPress={() => handleSelectHostel(hostel)}>
+              <Text style={styles.hostelText}>{hostel}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -54,9 +58,12 @@ const styles = StyleSheet.create({
     marginTop: 37,
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
+    
     padding: 10,
+    flex: 1,
+  },
+  scrollContainer: {
+    paddingBottom: 20,
   },
   header: {
     fontSize: 25,
