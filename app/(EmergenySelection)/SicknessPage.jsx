@@ -56,8 +56,6 @@ const styles = StyleSheet.create({
     marginTop: 37,
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
     padding: 10,
   },
   header: {
