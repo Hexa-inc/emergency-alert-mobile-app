@@ -80,7 +80,7 @@ export default function CreateAccount() {
 
         <Link href={"/HostelPage"} style={styles.SigninButton} onPress={handleContinue}>
           
-          <Text style={styles.SigninButtonText}>Sign in</Text>
+          <Text style={styles.SigninButtonText}>          Sign in</Text>
         </Link>
       </View>
     </View>
