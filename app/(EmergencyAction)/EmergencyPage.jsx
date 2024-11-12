@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Route } from 'expo-router/build/Route'
+import { router } from 'expo-router'
 
 const EmergencyPage = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={router.navigate('./SicknessPage')}>
       <Text>EmergencyPage</Text>
     </View>
   )

@@ -78,7 +78,7 @@ export default function CreateAccount() {
           <Text style={styles.checkboxLabel}>I agree to the terms and conditions</Text>
         </View>
 
-        <Link href={"/HostelPage"} style={styles.SigninButton} onPress={handleContinue}>
+        <Link href={"./HostelPage"} style={styles.SigninButton} onPress={handleContinue}>
           
           <Text style={styles.SigninButtonText}>Sign in</Text>
         </Link>
