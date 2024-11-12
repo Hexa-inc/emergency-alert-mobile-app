@@ -16,7 +16,7 @@ export default EmergencyPage
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%"

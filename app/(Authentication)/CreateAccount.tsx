@@ -80,8 +80,10 @@ export default function CreateAccount() {
 
         <Link href={"./HostelPage"} style={styles.SigninButton} onPress={handleContinue}>
           
-          <Text style={styles.SigninButtonText}>          Sign in</Text>
+          <Text style={styles.SigninButtonText}>Sign Up</Text>
         </Link>
+
+        <Text style={styles.signinTerms}>By signing in you agree to our Terms of Service and Privacy Policy.</Text>
       </View>
     </View>
   )
@@ -135,16 +137,25 @@ const styles = StyleSheet.create({
     paddingVertical: 12, // Additional padding for vertical centering
     paddingHorizontal: 20,
     backgroundColor: 'blue',
-    borderRadius: 40,
+    borderRadius: 17,
     alignSelf: "center", // Centers button in its container
     minWidth: 200, // Set minimum width as needed,
-    width: "70%",
+    width: "80%",
+    // height: "13%",
+    alignContent: 'center',
+    textAlign: "center"
   },
   
   SigninButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '500',
-    textAlign: "center", // Ensures text is centered within the button
+    fontWeight: '700',
+    textAlign: 'center', // Ensures text is centered within the button
+    
+    
   },
+
+  signinTerms: {
+    padding: 13,
+  }
 });

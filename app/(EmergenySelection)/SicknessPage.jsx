@@ -1,7 +1,7 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Pressable } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
+import {  useRouter, Link } from 'expo-router';
 
 const SicknessPage = () => {
   const router = useRouter();
@@ -14,7 +14,7 @@ const SicknessPage = () => {
       console.log(`Selected sickness: ${sickness}`); // Logs the selected sickness
 
       // Navigate to the next page
-      router.push('/ConfirmationPage'); // Replace '/nextSicknessPage' with your actual route
+      router.push('/(EmergencyAction)/ConfirmationPage'); // Replace '/nextSicknessPage' with your actual route
     } catch (error) {
       console.error('Error:', error);
     }
@@ -22,8 +22,12 @@ const SicknessPage = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <AntDesign name="arrowleft" size={30} color="black" style={{ marginTop: 29, marginLeft: 10 }} />
+      <Link asChild href={'/(EmergencyAction)/EmergencyPage'}>
+      <Pressable>
+      <AntDesign name="arrowleft" size={30} color="white" style={{ marginTop: 29, marginLeft: 10 }} />
+      </Pressable>
+      </Link>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.sicknessContainer}>
           <Text style={styles.header}>Sickness</Text>
 
@@ -51,12 +55,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'blue',
   },
+  scrollContainer: {
+    paddingBottom: 20,
+  },
   sicknessContainer: {
     backgroundColor: 'white',
     marginTop: 37,
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
     padding: 10,
+    flex: 1,
   },
   header: {
     fontSize: 25,
