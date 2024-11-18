@@ -24,9 +24,7 @@ const HostelPage = () => {
   return (
     <View style={styles.container}>    
       <Link asChild href={'/'}>
-
       <AntDesign name="arrowleft" size={30} color="white" style={{ marginTop: 29, marginLeft: 10 }} />
-      
       </Link>
       <View style={styles.hostelContainer}>
         <Text style={styles.header}>Select Hostel</Text>
