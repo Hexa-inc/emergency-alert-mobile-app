@@ -33,7 +33,8 @@ const SicknessPage = () => {
 
           {[
             'Allergic Reaction', 'Anxiety/Panic disorder', 'Bleeding', 'Chestpain', 'Difficulty Breathing',
-            'Fainting', 'Heat Stroke', 'Menstrual Cramps', 'Seizures', 'Ulcer', 'Viral infection', 'Poisonous intake'
+            'Fainting', 'Heat Stroke', 'Menstrual Cramps', 'Seizures', 'Ulcer', 'Viral infection', 'Poisonous intake',
+            'Others'
           ].map((sickness, index) => (
             <TouchableOpacity 
               key={index} 
