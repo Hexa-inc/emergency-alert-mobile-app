@@ -16,7 +16,7 @@ type Errors = {
 
 export default function CreateAccount() {
 
-   
+  
   const [firstname, setfirstname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
