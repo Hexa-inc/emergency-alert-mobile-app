@@ -26,6 +26,10 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
+    "assetBundlePatterns": [
+      "**/*",
+      "node_modules/react-native-vector-icons/Fonts/*"
+    ],
     "plugins": [
       "expo-router"
     ],

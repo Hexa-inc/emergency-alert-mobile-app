@@ -1,7 +1,7 @@
-import { Image, StyleSheet, Text, View, ImageBackground } from 'react-native'
+import {  StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import CreateAccount from '@/app/(Authentication)/CreateAccount';
-import SplashScreen from '@/constants/Image';
+import Image from '@/constants/Image';
 
 
 const LoadScreen = () => {
@@ -20,7 +20,7 @@ const LoadScreen = () => {
 if(loading){
   return (
     <View style={styles.container}>
-      <ImageBackground source={SplashScreen} style={styles.background} resizeMode='cover'/>
+      <ImageBackground source={Image.SplashScreen} style={styles.background} resizeMode='cover'/>
     </View>
   )
 }
