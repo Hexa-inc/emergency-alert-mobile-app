@@ -15,7 +15,9 @@ type Errors = {
 };
 
 export default function CreateAccount() {
-  const [firstname, setFirstname] = useState<string>('');
+
+
+  const [firstname, setfirstname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isChecked, setIsChecked] = useState(false); // Checkbox state
@@ -79,7 +81,7 @@ export default function CreateAccount() {
         </View>
 
         <Link href={"./HostelPage"} style={styles.SigninButton} onPress={handleContinue}>
-          
+
           <Text style={styles.SigninButtonText}>Sign Up</Text>
         </Link>
 
@@ -145,14 +147,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     textAlign: "center"
   },
-  
+
   SigninButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center', // Ensures text is centered within the button
-    
-    
+
+
   },
 
   signinTerms: {
