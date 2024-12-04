@@ -11,7 +11,7 @@ const LoadScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       isLoading(false)
-    },9000 )
+    },4000 )
 
     return () => clearTimeout(timer);
   }, []);
