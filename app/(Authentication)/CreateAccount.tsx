@@ -60,7 +60,7 @@ export default function CreateAccount() {
         <Text style={styles.topText}>Create Account</Text>
 
         <View style={styles.inputContainer}>
-          <Input value={firstname} setValue={setFirstname} placeholder='First Name' error={error.firstname} />
+          <Input value={firstname} setValue={setfirstname} placeholder='First Name' error={error.firstname} />
         </View>
 
         <View style={styles.inputContainer}>
