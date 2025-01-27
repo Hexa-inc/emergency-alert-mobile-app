@@ -14,7 +14,7 @@ const SicknessPage = () => {
       console.log(`Selected sickness: ${sickness}`); // Logs the selected sickness
 
       // Navigate to the next page
-      router.push('/(EmergencyAction)/ConfirmationPage'); // Replace '/nextSicknessPage' with your actual route
+      router.push('/(EmergencyAction)/EmergencyRing'); // Replace '/nextSicknessPage' with your actual route
     } catch (error) {
       console.error('Error:', error);
     }
