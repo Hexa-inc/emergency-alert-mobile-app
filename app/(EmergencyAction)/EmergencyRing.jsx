@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Image, Animated } from 'react-native'
+import { StyleSheet, View, Image, Animated, Text } from 'react-native'
 import images from '../../constants/Image'
 
 const EmergencyRing = () => {
@@ -38,6 +38,7 @@ const EmergencyRing = () => {
         style={[styles.buttonImage, { transform: [{ translateX: shakeAnim }] }]}
         source={images.alertBell}
       />
+      <Text style={styles.text}>RINGING..</Text>
     </View>
   )
 }
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
       },
       text: {
         color: '#ffffff',
-        fontSize: 16,
+        fontSize: 46,
+        
       },
 })
