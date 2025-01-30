@@ -1,12 +1,12 @@
 import BackgroundJob from 'react-native-background-actions';
 import { io, Socket } from 'socket.io-client';
 import Sound from 'react-native-sound';
-import { useGlobal } from '@/components/GlobalSearch'; // Import your global context
+import { useGlobal } from '@/components/GlobalSearch'; // Adjust path to your global context file
 
 let socket: Socket | null = null;
 
 const startAlarm = (): void => {
-  const alarm = new Sound('alarm.mp3', Sound.MAIN_BUNDLE, (error) => {
+  const alarm = new Sound('alarm.wav', Sound.MAIN_BUNDLE, (error) => {
     if (error) {
       console.error('Error loading sound', error);
       return;

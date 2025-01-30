@@ -1,53 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useGlobal } from '@/components/GlobalSearch'; // Access updated context
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, Animated, Text, ActivityIndicator } from 'react-native';
+import { startBackgroundService, stopBackgroundService } from '@/services/backgroundService'; // Adjust path to your background service file
+import { useGlobal } from '@/components/GlobalSearch'; // Import global context for emergency alert state
 import images from '../../constants/Image';
 
-const EmergencyPage = () => {
-  const router = useRouter();
-  const { emergencyAlert, setEmergencyAlert, sickness, hostelname } = useGlobal(); // Access emergencyAlert state and other global values
+const EmergencyRing = () => {
+  const { emergencyAlert, setEmergencyAlert } = useGlobal(); // Access global context
   const [loading, setLoading] = useState(false);
+  const shakeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    // Start the background service to listen for alerts
+    startBackgroundService();
+
+    // Run the shake animation when the component mounts
+    const shake = () => {
+      Animated.sequence([
+        Animated.timing(shakeAnim, {
+          toValue: 10, // Move right
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnim, {
+          toValue: -10, // Move left
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnim, {
+          toValue: 0, // Center back
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ]).start(() => shake()); 
+    };
+
+    shake(); 
+
+    // Cleanup function to stop the background service when component unmounts
+    return () => {
+      stopBackgroundService(); // Stop the background service when the component unmounts
+    };
+  }, [shakeAnim]);
+
+  // Handle emergency alert state
   useEffect(() => {
     if (emergencyAlert) {
       console.log('Emergency alert received!');
-      
-      // Handle the emergency alert here (e.g., show notifications, start sounds)
-      
-      // Optionally, reset the emergency alert state after processing
-      setEmergencyAlert(false); // Reset after handling the alert
+      // Reset alert state after handling it
+      setEmergencyAlert(false);
+      // Optionally, add further alert handling logic
     }
   }, [emergencyAlert]);
-
-  const handleEmergency = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('https://your-backend-url.com/api/emergency', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          signal: 'EmergencyON',
-          sickness: sickness || 'Unknown',
-          hostelname: hostelname || 'Unknown',
-        }),
-      });
-
-      if (response.ok) {
-        console.log('Signal Sent: Emergency signal has been sent.');
-        router.push('/(EmergencyAction)/EmergencyRing'); // Navigate to the emergency action page
-      } else {
-        console.log('Error: Failed to send the emergency signal.');
-      }
-    } catch (error) {
-      console.log('Error: An error occurred while sending the signal.');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -55,17 +58,18 @@ const EmergencyPage = () => {
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
         <>
-          <TouchableOpacity onPress={handleEmergency} style={styles.emergencyButton}>
-            <Image source={images.EmergencyOff} style={styles.buttonImage} />
-          </TouchableOpacity>
-          <Text style={styles.text}>Click the Emergency Button</Text>
+          <Animated.Image
+            style={[styles.buttonImage, { transform: [{ translateX: shakeAnim }] }]}
+            source={images.alertBell}
+          />
+          <Text style={styles.text}>RINGING..</Text>
         </>
       )}
     </View>
   );
 };
 
-export default EmergencyPage;
+export default EmergencyRing;
 
 const styles = StyleSheet.create({
   container: {
@@ -75,19 +79,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
-  emergencyButton: {
+  alertButton: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
   },
   buttonImage: {
-    width: 300,
-    height: 300,
+    width: 300, // Adjust size to fit your design
+    height: 300, // Adjust size to fit your design
     resizeMode: 'contain',
     borderRadius: 180,
   },
   text: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 46,
   },
 });
