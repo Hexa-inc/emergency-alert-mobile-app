@@ -5,6 +5,8 @@ type GlobalContextType = {
   setHostelname: (name: string) => void;
   sickness: string;
   setSickness: (name: string) => void;
+  emergencyAlert: boolean;
+  setEmergencyAlert: (alert: boolean) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -12,9 +14,10 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [hostelname, setHostelname] = useState('');
   const [sickness, setSickness] = useState('');
+  const [emergencyAlert, setEmergencyAlert] = useState(false); // Add emergencyAlert state
 
   return (
-    <GlobalContext.Provider value={{ hostelname, setHostelname, sickness, setSickness }}>
+    <GlobalContext.Provider value={{ hostelname, setHostelname, sickness, setSickness, emergencyAlert, setEmergencyAlert }}>
       {children}
     </GlobalContext.Provider>
   );
