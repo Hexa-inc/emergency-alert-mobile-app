@@ -1,31 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import { router } from 'expo-router';
-import images from '../../constants/Image'// Update with the correct path to the file containing your image exports
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useGlobal } from '@/components/GlobalSearch'; // Import global context
+import images from '../../constants/Image'; // Ensure correct path
 
 const EmergencyPage = () => {
-  const handleEmergency = async() => {
+  const router = useRouter();
+  const { sickness, hostelname } = useGlobal(); // Single destructuring
+
+  const handleEmergency = async () => {
     try {
-      // Send a mock signal to the backend
       const response = await fetch('https://your-backend-url.com/api/emergency', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ signal: 'EmergencyON' }),
+        body: JSON.stringify({ 
+          signal: 'EmergencyON',
+          sickness: sickness || 'Unknown', 
+          hostelname: hostelname || 'Unknown'
+        }),
       });
 
       if (response.ok) {
-        // Mock signal successfully sent
-        console.log('Signal Sent', 'Emergency signal has been sent.');
-        router.push('/(EmergenySelection)/SicknessPage');
+        console.log('Signal Sent: Emergency signal has been sent.');
+        console.log(`Sickness: ${sickness}`);
+        console.log(`Hostel: ${hostelname}`);
+
+        router.push('/(EmergencyAction)/EmergencyRing'); // Navigate to Emergency Action page
       } else {
-        // Handle backend errors
-        console.log('Error', 'Failed to send the emergency signal.');
+        console.log('Error: Failed to send the emergency signal.');
       }
     } catch (error) {
-      // Handle network errors
-      console.log('Error', 'An error occurred while sending the signal.');
+      console.log('Error: An error occurred while sending the signal.');
       console.error(error);
     }
   };
@@ -58,8 +65,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonImage: {
-    width: 300, // Adjust size to fit your design
-    height: 300, // Adjust size to fit your design
+    width: 300, 
+    height: 300, 
     resizeMode: 'contain',
     borderRadius: 180
   },

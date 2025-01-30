@@ -2,24 +2,23 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Pressable } from 
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import {  useRouter, Link } from 'expo-router';
+import { useGlobal } from '@/components/GlobalSearch';
+
 
 const SicknessPage = () => {
   const router = useRouter();
+  
+  const { setSickness } = useGlobal(); // Correct placement
 
-  const handleSelectSickness = async (sickness) => {
-    try {
-      // Mock backend request
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate a 1-second delay
-
-      console.log(`Selected sickness: ${sickness}`); // Logs the selected sickness
-
-      // Navigate to the next page
-      router.push('/(EmergencyAction)/EmergencyRing'); // Replace '/nextSicknessPage' with your actual route
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
+const handleSelectSickness = async (sickness) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
+    setSickness(sickness); // Update global state
+    router.push('/(EmergencyAction)/EmergencyPage'); // Navigate
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
   return (
     <View style={styles.container}>
       <Link asChild href={'/(EmergencyAction)/EmergencyPage'}>

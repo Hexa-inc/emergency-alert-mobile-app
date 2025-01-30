@@ -1,7 +1,13 @@
-import { Stack } from "expo-router";
+import { Slot } from 'expo-router';
+import { NavigationContainer } from '@react-navigation/native';
+import { GlobalProvider } from '@/components/GlobalSearch'; 
 
-export default function loadScreen() {
-    return (
-            <Stack screenOptions={{headerShown: false}}/>
-    );
+export default function Layout() {
+  return (
+    <NavigationContainer>
+      <GlobalProvider>
+        <Slot /> 
+      </GlobalProvider>
+    </NavigationContainer>
+  );
 }
