@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { Link, router } from 'expo-router';
 import Input from '@/components/Input';
@@ -21,6 +21,7 @@ export default function CreateAccount() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isChecked, setIsChecked] = useState(false); // Checkbox state
+  
   const [error, setErrors] = useState<Errors>({
     firstname: null,
     email: null,
@@ -34,7 +35,7 @@ export default function CreateAccount() {
     return null;
   };
 
-  const handleContinue = () => {
+  const handleContinue = async() => {
     const newErrors: {
       firstname: string | null;
       email: string | null;
@@ -48,9 +49,26 @@ export default function CreateAccount() {
     setErrors(newErrors);
 
     if (!Object.values(newErrors).some((error) => error !== null) && isChecked) {
-      router.navigate("./");
+      try {
+        const response = await fetch('https://your-backend.com/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstname, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          Alert.alert('Success', 'Account created successfully!');
+          router.navigate("./");
+        } else {
+          Alert.alert('Error', data.message || 'Signup failed');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Network error, please try again later');
+      }
     } else if (!isChecked) {
-      alert('Please agree to the terms and conditions');
+      Alert.alert('Error', 'Please agree to the terms and conditions');
     }
   };
 
