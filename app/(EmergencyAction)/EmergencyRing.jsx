@@ -1,56 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Animated, Text, ActivityIndicator } from 'react-native';
-import { startBackgroundService, stopBackgroundService } from '@/services/backgroundService'; // Adjust path to your background service file
-import { useGlobal } from '@/components/GlobalSearch'; // Import global context for emergency alert state
+import { startBackgroundService, stopBackgroundService } from '@/services/backgroundService'; // Ensure path is correct
+import { useGlobal } from '@/components/GlobalSearch'; // Global state for emergency alert
 import images from '../../constants/Image';
 
 const EmergencyRing = () => {
-  const { emergencyAlert, setEmergencyAlert } = useGlobal(); // Access global context
+  const { emergencyAlert, setEmergencyAlert } = useGlobal(); 
   const [loading, setLoading] = useState(false);
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Start the background service to listen for alerts
+    // Start background service only if it's not already running
     startBackgroundService();
 
-    // Run the shake animation when the component mounts
+    return () => {
+      stopBackgroundService(); // Cleanup when component unmounts
+    };
+  }, []);
+
+  useEffect(() => {
+    // Function to trigger the shake animation
     const shake = () => {
       Animated.sequence([
-        Animated.timing(shakeAnim, {
-          toValue: 10, // Move right
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: -10, // Move left
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: 0, // Center back
-          duration: 100,
-          useNativeDriver: true,
-        }),
-      ]).start(() => shake()); 
+        Animated.timing(shakeAnim, { toValue: 10, duration: 100, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -10, duration: 100, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 100, useNativeDriver: true }),
+      ]).start();
     };
 
-    shake(); 
-
-    // Cleanup function to stop the background service when component unmounts
-    return () => {
-      stopBackgroundService(); // Stop the background service when the component unmounts
-    };
-  }, [shakeAnim]);
-
-  // Handle emergency alert state
-  useEffect(() => {
+    // Start shaking only when an emergency alert is received
     if (emergencyAlert) {
       console.log('Emergency alert received!');
-      // Reset alert state after handling it
-      setEmergencyAlert(false);
-      // Optionally, add further alert handling logic
+      shake();
+      setEmergencyAlert(false); // Reset alert state after handling it
     }
-  }, [emergencyAlert]);
+  }, [emergencyAlert]); // Only trigger when emergencyAlert changes
 
   return (
     <View style={styles.container}>
@@ -79,14 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
-  alertButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   buttonImage: {
-    width: 300, // Adjust size to fit your design
-    height: 300, // Adjust size to fit your design
+    width: 300,
+    height: 300,
     resizeMode: 'contain',
     borderRadius: 180,
   },

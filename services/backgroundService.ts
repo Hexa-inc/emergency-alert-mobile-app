@@ -1,66 +1,101 @@
-import BackgroundJob from 'react-native-background-actions';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
 import { io, Socket } from 'socket.io-client';
-import Sound from 'react-native-sound';
-import { useGlobal } from '@/components/GlobalSearch'; // Adjust path to your global context file
+import { Audio } from 'expo-av';
 
+const BACKGROUND_TASK = 'BACKGROUND_TASK';
 let socket: Socket | null = null;
+let soundObject: Audio.Sound | null = null;
 
-const startAlarm = (): void => {
-  const alarm = new Sound('alarm.wav', Sound.MAIN_BUNDLE, (error) => {
-    if (error) {
-      console.error('Error loading sound', error);
+// Load and play the alarm sound
+const startAlarm = async (): Promise<void> => {
+  try {
+    if (!soundObject) {
+      const { sound } = await Audio.Sound.createAsync(
+        require('./assets/alarm.mp3'),
+        { shouldPlay: true, isLooping: true }
+      );
+      soundObject = sound;
+    }
+    await soundObject.playAsync();
+  } catch (error) {
+    console.error('Error playing alarm sound:', error);
+  }
+};
+
+// Stop the alarm sound
+const stopAlarm = async (): Promise<void> => {
+  try {
+    if (soundObject) {
+      await soundObject.stopAsync();
+      soundObject = null;
+    }
+  } catch (error) {
+    console.error('Error stopping alarm sound:', error);
+  }
+};
+
+// Define the background task
+TaskManager.defineTask(BACKGROUND_TASK, async () => {
+  try {
+    if (!socket) {
+      socket = io('ws://your-server-url:3000', { transports: ['websocket'] });
+
+      socket.on('connect', () => {
+        console.log('Connected to server in background');
+
+        socket?.on('new_alert', (data: any) => {
+          console.log('Background received alert:', data);
+          startAlarm(); // Start alarm when alert is received
+        });
+      });
+
+      socket.on('connect_error', (err: Error) => {
+        console.error('Background connection error:', err);
+      });
+    }
+  } catch (error) {
+    console.error('Error in background task', error);
+  }
+
+  return BackgroundFetch.BackgroundFetchResult.NewData;// Ensure task returns a valid value
+});
+
+// Register the background task
+export const startBackgroundService = async (): Promise<void> => {
+  try {
+    const isRegistered = await BackgroundFetch.getStatusAsync();
+    if (isRegistered !== BackgroundFetch.BackgroundFetchStatus.Available) {
+      console.warn('Background Fetch is not available');
       return;
     }
-    alarm.setNumberOfLoops(-1); // Loop the alarm indefinitely
-    alarm.play(); // Play the alarm
-  });
-};
 
-const backgroundTask = async (taskData?: { [key: string]: any }): Promise<void> => {
-  socket = io('ws://your-server-url:3000', {
-    transports: ['websocket'],
-  });
-
-  socket.on('connect', () => {
-    console.log('Connected to server in background');
-    
-    socket?.on('new_alert', (data: any) => {
-      console.log('Background received alert:', data);
-      
-      // Update global context to notify the UI
-      const { setEmergencyAlert } = useGlobal();
-      setEmergencyAlert(true); // Set the alert to true when a new alert is received
-
-      startAlarm(); // Play alarm if necessary
+    await BackgroundFetch.registerTaskAsync(BACKGROUND_TASK, {
+      minimumInterval: 60, // Minimum interval in seconds
+      stopOnTerminate: false, // Keep running after app termination
+      startOnBoot: true, // Start task after reboot
     });
-  });
 
-  socket.on('connect_error', (err: Error) => {
-    console.error('Background connection error:', err);
-  });
-
-  // Keep the task alive indefinitely
-  await new Promise(() => {});
-};
-
-export const startBackgroundService = async (): Promise<void> => {
-  await BackgroundJob.start(backgroundTask, {
-    taskName: 'WebSocket Listener',
-    taskTitle: 'Monitoring Alerts',
-    taskDesc: 'Listening for emergency alerts',
-    taskIcon: {
-      name: 'ic_launcher',
-      type: 'mipmap',
-    },
-    linkingURI: 'your-app-scheme://',
-    parameters: {},
-  });
-};
-
-export const stopBackgroundService = async (): Promise<void> => {
-  if (socket) {
-    socket.disconnect();
-    socket = null;
+    console.log('Background service started');
+  } catch (error) {
+    console.error('Error starting background service', error);
   }
-  await BackgroundJob.stop();
+};
+
+// Stop the background service
+export const stopBackgroundService = async (): Promise<void> => {
+  try {
+    if (socket) {
+      socket.disconnect();
+      socket = null;
+      console.log('Socket disconnected');
+    }
+
+    await BackgroundFetch.unregisterTaskAsync(BACKGROUND_TASK);
+    console.log('Background service stopped');
+
+    stopAlarm(); // Ensure the alarm stops when service is stopped
+  } catch (error) {
+    console.error('Error stopping background service', error);
+  }
 };
