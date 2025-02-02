@@ -1,33 +1,29 @@
-import { useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import  LoadScreen   from "../components/LoadScreen";
-
-
-SplashScreen.preventAutoHideAsync();
+import LoadScreen from "../components/LoadScreen";
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     'load_screen': require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
     if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
+      setTimeout(() => setIsLoading(false), 2000); // Simulate a delay
     }
   }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded && !fontError) {
-    return null;
+  if (isLoading) {
+    return <LoadScreen />;  // Show custom loading screen
   }
 
   return (
-     
-    <View style={styles.container} onLayout={onLayoutRootView}>
-       <LoadScreen/>
+    <View style={styles.container}>
+      <Text>Welcome to the App!</Text>
     </View>
-   
   );
 }
 

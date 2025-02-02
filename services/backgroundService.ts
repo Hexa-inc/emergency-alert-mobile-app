@@ -12,7 +12,7 @@ const startAlarm = async (): Promise<void> => {
   try {
     if (!soundObject) {
       const { sound } = await Audio.Sound.createAsync(
-        require('./assets/alarm.mp3'),
+        require('../assets/sound/alarm.wav'),
         { shouldPlay: true, isLooping: true }
       );
       soundObject = sound;
