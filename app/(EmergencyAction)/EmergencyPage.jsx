@@ -10,15 +10,14 @@ const EmergencyPage = () => {
 
   const handleEmergency = async () => {
     try {
-      const response = await fetch('https://your-backend-url.com/api/emergency', {
+      const response = await fetch('https://hexa-emergency-backend-service.onrender.com/api/alerts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          signal: 'EmergencyON',
-          sickness: sickness || 'Unknown', 
-          hostelname: hostelname || 'Unknown'
+          senderId: "81001ced-8847-4829-a283-69fbe9576e1f",
+          message: `Emergency at ${hostelname} with ${sickness}`
         }),
       });
 

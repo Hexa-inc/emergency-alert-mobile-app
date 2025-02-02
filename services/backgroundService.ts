@@ -5,7 +5,7 @@ import { Audio } from 'expo-av';
 
 const BACKGROUND_TASK = 'BACKGROUND_TASK';
 let socket: Socket | null = null;
-let soundObject: Audio.Sound | null = null;
+let soundObject: Audio.Sound | null = null; 
 
 // Load and play the alarm sound
 const startAlarm = async (): Promise<void> => {
@@ -39,12 +39,12 @@ const stopAlarm = async (): Promise<void> => {
 TaskManager.defineTask(BACKGROUND_TASK, async () => {
   try {
     if (!socket) {
-      socket = io('ws://your-server-url:3000', { transports: ['websocket'] });
+      socket = io('ws://hexa-emergency-backend-service.onrender.com/', { transports: ['websocket'] });
 
       socket.on('connect', () => {
         console.log('Connected to server in background');
 
-        socket?.on('new_alert', (data: any) => {
+        socket?.on('new_alert', (data: string) => {
           console.log('Background received alert:', data);
           startAlarm(); // Start alarm when alert is received
         });
